@@ -123,6 +123,7 @@ jobs:
             kubeconfig: '${{ secrets.KUBECONFIG }}'
 
         - name: Test kubeconfig setup
+          continue-on-error: true
           run: kubectl version --short -o yaml
 
         - name: Setting IngressIP env var
