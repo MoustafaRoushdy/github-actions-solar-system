@@ -135,8 +135,8 @@ jobs:
             tokenPrefix: '_{_'
             tokenSuffix: '_}_'
             env:
-              NAMESPACE: ${{ env.NAMESPACE }}
-              REPLICAS: ${{ env.REPLICAS }}
+              NAMESPACE: ${{ vars.NAMESPACE }}
+              REPLICAS: ${{ vars.REPLICAS }}
               IMAGE:  ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
 
         - name: check the replaced files
