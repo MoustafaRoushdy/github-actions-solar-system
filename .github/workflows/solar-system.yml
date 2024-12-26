@@ -124,3 +124,20 @@ jobs:
 
         - name: Test kubeconfig setup
           run: kubectl version --short -o yaml
+
+        - name: Setting IngressIP env var
+          run: echo INGRESS_IP=$(kubectl -n ingress-nginx get services ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}") >> $GITHUB_ENV
+
+        - name: Replace Placholders with env vars
+          uses: cschleiden/replace-tokens@1
+          with: 
+            files: ["kubernetes/development/*.yaml"]
+            tokenPrefix: '_{_'
+            tokenSuffix: '_}_'
+            env:
+              NAMESPACE: ${{ env.NAMESPACE }}
+              REPLICAS: ${{ env.REPLICAS }}
+              IMAGE:  ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+
+        - name: check the replaced files
+          run: cat kubernetes/development/*.yaml
